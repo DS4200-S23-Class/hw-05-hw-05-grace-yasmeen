@@ -13,7 +13,7 @@ const FRAME1 = d3.select("#vis1")
 				  .append("svg")
 				  .attr("height", FRAME_HEIGHT)
 				  .attr("width", FRAME_WIDTH)
-				  .attr("class", "frame");
+				  .attr("id", "frame");
 
 //SCATTER PLOT//
 
@@ -177,11 +177,13 @@ function addPoint()
 	 let ycord = ((10 - document.getElementById("y-option").value) * 40) + 50
 	 let r = 10; 
 	 // add point to graph
-	 let g = document.getElementsByClassName("point");
+	 let g = document.getElementById('frame');
+	 console.log(g)
 
 	 // access the circles from the point class
 	 g.innerHTML += "<circle "+" cx=" + xcord + " cy=" + ycord +  " r=" + r + "></circle>"
 	 console.log(g.innerHTML)
+
 	 // call event listener function
 	 listeners()
 }
