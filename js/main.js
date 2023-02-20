@@ -15,6 +15,8 @@ const FRAME1 = d3.select("#vis1")
 				  .attr("width", FRAME_WIDTH)
 				  .attr("class", "frame");
 
+//SCATTER PLOT//
+
 // read scatter plot data
 d3.csv("data/scatter-data.csv").then((data) => {
 
@@ -56,6 +58,7 @@ d3.csv("data/scatter-data.csv").then((data) => {
 			.attr("font-size", '20px');
 });
 
+//BAR PLOT//
 
 const FRAME2 = d3.select("#vis2")
                   .append("svg")
@@ -68,15 +71,14 @@ d3.csv("data/bar-data.csv").then((data) => {
 
 	 // Build plot inside of .then 
     // find max X
-   // find the max X
-	const MAX_X2 = d3.max(data, (d) => { return d.x; });
+	const MAX_X2 = d3.max(data, (d) => { return (d.category); });
 	// find the max Y
-	const MAX_Y2 = d3.max(data, (d) => { return parseInt(d.y); });
+	const MAX_Y2 = d3.max(data, (d) => { return parseInt(d.amount); });
 
 	//domain and range
-	const X_SCALE2 = d3.scaleLinear()
-					.domain([0, (MAX_X2 + 1)])
-					.range([0, VIS_WIDTH]);
+	const X_SCALE2 = d3.scaleBand()
+					.domain(data.map(function(d) {return d.category;}))
+					.range([0, VIS_WIDTH]).padding(.25);
 	const Y_SCALE2 = d3.scaleLinear()
 					.domain([(MAX_Y2 + 10) ,0])
 					.range([0, VIS_HEIGHT]);
@@ -86,24 +88,64 @@ d3.csv("data/bar-data.csv").then((data) => {
         .data(data) // passed from .then  
         .enter()       
         .append("rect")  
-          .attr("x", (d) => { return (X_SCALE2(d.x) + MARGINS.left); }) 
-          .attr("y", (d) => {return (Y_SCALE2(d.y) +  MARGINS.top);})
-          .attr("class", "bar");
+          // .attr("x", (d) => { return (X_SCALE2(d.category) + MARGINS.left); }) 
+          // .attr("y", (d) => {return (Y_SCALE2(d.amount) +  MARGINS.top);})
+        	.attr("x", (d) => { return X_SCALE2(d.category) + MARGINS.left; }) 
+          .attr("y", (d) => {return Y_SCALE2(d.amount) +  MARGINS.top;})
+          .attr("class", "bar") 
+          .attr("width", X_SCALE2.bandwidth())
+          .attr("height", (d) => { return VIS_HEIGHT - Y_SCALE2(d.amount); })
+          //.attr("fill", "cornflowerblue") 
+          .on("mouseover", handleMouseover)
+					.on("mousemove", handleMousemove)
+					.on("mouseleave", handleMouseleave)
+
 
 	// Add x-axis to vis2
-	FRAME1.append("g")
+	FRAME2.append("g")
 		.attr("transform", "translate(" + MARGINS.left + ","
 			+ (VIS_HEIGHT + MARGINS.top) + ")")
 		.call(d3.axisBottom(X_SCALE2).ticks(7))
-			.attr("font-size", '20px')
+			.attr("font-size", '20px');  
 		
 	// Add y-axis to vis2
-	FRAME1.append("g")
+	FRAME2.append("g")
 		.attr("transform", "translate(" + MARGINS.left + ","
 			+ (MARGINS.bottom) + ")")
 		.call(d3.axisLeft(Y_SCALE2).ticks(10))
 			.attr("font-size", '20px');
 
+
+	// Tooltip for bar plot
+
+			const TOOLTIP = d3.select("#vis2")
+													.append("div")
+													.attr("class", "tooltip")
+													.style("opacity", 0);
+
+			// Event handler for tool tip
+			function handleMouseover(event, d){
+				// make opaque on mouseover
+				TOOLTIP.style("opacity", 1);
+			}
+
+			function handleMousemove(event, d){
+				// fill tooltip with information
+				TOOLTIP.html("Category " + d.category + "<br>Value: " + d.amount)
+								.style("left", (event.pageX + 10) + "px") //offset
+								.style("top", (event.pageY - 50) + "px");
+			}
+
+			function handleMouseleave(event, d){
+				// make transparent on mouseleave
+				TOOLTIP.style("opacity", 0);
+			}
+
+			// // Add event listeners
+			// FRAME2.selectALL(".bar")
+			// 			.on("mouseover", handleMouseover)
+			// 			.on("mousemove", handleMousemove)
+			// 			.on("mouseleave", handleMouseleave); 
 });  
 
 // circle click function for border
@@ -121,6 +163,8 @@ function circleClick()
 		listeners()
 
 }
+
+// Scatter plot event handlers
 
 //  add point to grid
 function addPoint()
