@@ -21,7 +21,53 @@
     <h1>hw-05: Interactive Event Handling </h1>
 
     <!-- scatter plot visualization -->
-    <div id="vis1"></div>
+    <div class = "row">
+        <div class = "left">
+            <div id="vis1"></div>
+        </div>
+
+
+        <!-- create options -->
+        <div class="right">
+            <div class="text" id="selected-point">
+            </div>  
+            <div class="custom-select" style="width:700px;">
+                <p> Select the x coordinate for the point you want to add.</p>
+                 <!-- options for x cord-->
+                <select id = "x-option">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+            </div>
+            <div class="custom-select" style="width:700px;">
+                <p> Select the y coordinate for the point you want to add.</p>
+                <!-- options for y cord-->
+                <select id = "y-option">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                </select>
+            </div>
+            <div>
+                <!-- add button -->
+                <button type="button" id="addCircle">Add Point</button>
+            </div>
+        </div>
+    </div>
+
     <div id="vis2"></div>
 
 

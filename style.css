@@ -8,7 +8,16 @@ h1{
 	text-align: center;
 }
 
-/* Make Columns */
+circle:hover{
+  fill: orange;
+}
+
+.borderitem{
+  stroke: limegreen;
+  stroke-width: 3;
+}
+
+/* make columns */
 .row {
   display: flex;
   flex-direction: row;
@@ -28,16 +37,5 @@ h1{
   flex-direction: column;
   width: 40%;
 
-
 }
 
-.graph {
-  height: 500px;
-  width: 800px;
-}
-
-.graph .grid {
-  stroke: black;
-  stroke-dasharray: 0;
-  stroke-width: 4;
- }
