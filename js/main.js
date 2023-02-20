@@ -160,6 +160,8 @@ function circleClick()
 		let ycord = 10 - ((this.getAttribute("cy") - 50) / 40)
 		let newText = "Last point clicked: (" + xcord +","+ ycord + ")";	
 		document.getElementById("selected-point").innerHTML = newText;
+		console.log(newText)
+
 		listeners()
 
 }
@@ -171,23 +173,28 @@ function addPoint()
 {
 	// add new points
 	// reverse the arithmetic
-	 let xcord = (document.getElementById("x-option").value * 40) + 10
-	 let ycord = ((9 - document.getElementById("y-option").value) * 40) + 30
-	 let r = 8; 
+	 let xcord = (document.getElementById("x-option").value * 35) + 50
+	 let ycord = ((10 - document.getElementById("y-option").value) * 40) + 50
+	 let r = 10; 
 	 // add point to graph
 	 let g = document.getElementsByClassName("point");
+
 	 // access the circles from the point class
 	 g.innerHTML += "<circle "+" cx=" + xcord + " cy=" + ycord +  " r=" + r + "></circle>"
+	 console.log(g.innerHTML)
 	 // call event listener function
 	 listeners()
 }
 
 // Event listener for point
-document.getElementById("addCircle").addEventListener("click",addPoint);
+// document.getElementById("addCircle").addEventListener("click",addPoint);
 
 // event listener function
 function listeners() 
 {
+
+	document.getElementById("addCircle").addEventListener("click",addPoint);
+
 	// get the id from the index
 	let vals = document.getElementsByClassName("point");
 
