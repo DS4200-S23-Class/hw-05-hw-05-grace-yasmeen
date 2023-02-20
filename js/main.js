@@ -156,8 +156,8 @@ function circleClick()
 		this.classList.toggle("borderitem");
 
 		//update text
-		let xcord = (this.getAttribute("cx") - 10) / 40
-		let ycord = 9 - ((this.getAttribute("cy") - 30) / 40)
+		let xcord = (this.getAttribute("cx") - 50) / 35
+		let ycord = 10 - ((this.getAttribute("cy") - 50) / 40)
 		let newText = "Last point clicked: (" + xcord +","+ ycord + ")";	
 		document.getElementById("selected-point").innerHTML = newText;
 		listeners()
