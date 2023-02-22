@@ -16,7 +16,7 @@ const FRAME1 = d3.select("#vis1")
 				  .attr("id", "frame");
 
 //SCATTER PLOT//
-
+function build_interactive_scatter() {
 // read scatter plot data
 d3.csv("data/scatter-data.csv").then((data) => {
 
@@ -56,16 +56,21 @@ d3.csv("data/scatter-data.csv").then((data) => {
 			+ (MARGINS.bottom) + ")")
 		.call(d3.axisLeft(Y_SCALE).ticks(10))
 			.attr("font-size", '20px');
+
+	//call event listener
+	listeners()
 });
 
-//BAR PLOT//
+}
 
 const FRAME2 = d3.select("#vis2")
                   .append("svg")
                     .attr("height", FRAME_HEIGHT)
                     .attr("width", FRAME_WIDTH)
                     .attr("class", "frame"); 
-
+                    
+//BAR PLOT//
+function build_interactive_bar() {
 // read bar plot data
 d3.csv("data/bar-data.csv").then((data) => {
 
@@ -80,7 +85,7 @@ d3.csv("data/bar-data.csv").then((data) => {
 					.domain(data.map(function(d) {return d.category;}))
 					.range([0, VIS_WIDTH]).padding(.25);
 	const Y_SCALE2 = d3.scaleLinear()
-					.domain([(MAX_Y2 + 10) ,0])
+					.domain([(MAX_Y2+1) ,0])
 					.range([0, VIS_HEIGHT]);
 
     // Use X_SCALE to plot bars
@@ -105,7 +110,7 @@ d3.csv("data/bar-data.csv").then((data) => {
 	FRAME2.append("g")
 		.attr("transform", "translate(" + MARGINS.left + ","
 			+ (VIS_HEIGHT + MARGINS.top) + ")")
-		.call(d3.axisBottom(X_SCALE2).ticks(7))
+		.call(d3.axisBottom(X_SCALE2))
 			.attr("font-size", '20px');  
 		
 	// Add y-axis to vis2
@@ -140,13 +145,9 @@ d3.csv("data/bar-data.csv").then((data) => {
 				// make transparent on mouseleave
 				TOOLTIP.style("opacity", 0);
 			}
-
-			// // Add event listeners
-			// FRAME2.selectALL(".bar")
-			// 			.on("mouseover", handleMouseover)
-			// 			.on("mousemove", handleMousemove)
-			// 			.on("mouseleave", handleMouseleave); 
 });  
+
+}
 
 // circle click function for border
 function circleClick()
@@ -160,9 +161,7 @@ function circleClick()
 		let ycord = 10 - ((this.getAttribute("cy") - 50) / 40)
 		let newText = "Last point clicked: (" + xcord +","+ ycord + ")";	
 		document.getElementById("selected-point").innerHTML = newText;
-		console.log(newText)
-
-		listeners()
+		//console.log(newText)
 
 }
 
@@ -178,36 +177,36 @@ function addPoint()
 	 let r = 10; 
 	 // add point to graph
 	 let g = document.getElementById('frame');
-	 console.log(g)
 
 	 // access the circles from the point class
-	 g.innerHTML += "<circle "+" cx=" + xcord + " cy=" + ycord +  " r=" + r + "></circle>"
-	 console.log(g.innerHTML)
+	 g.innerHTML += "<circle "+" cx=" + xcord + " cy=" + ycord +  " r=" + r + " class= \"point\" ></circle>"
+	 //console.log(g.innerHTML)
 
 	 // call event listener function
 	 listeners()
 }
 
 // Event listener for point
-// document.getElementById("addCircle").addEventListener("click",addPoint);
+document.getElementById("addCircle").addEventListener("click",addPoint);
 
 // event listener function
 function listeners() 
 {
 
-	document.getElementById("addCircle").addEventListener("click",addPoint);
-
-	// get the id from the index
 	let vals = document.getElementsByClassName("point");
-
-	for (var i = 0; i < vals.length; i++) {
-    vals[i].addEventListener('click', circleClick);
+	// loop throuh all points
+	for (let i = 0; i < vals.length; i++) 
+	{
+    vals[i].addEventListener('click', circleClick)
 	}
 
-
 }
-//call event listener
-listeners()
+
+// call plot functions 
+build_interactive_scatter();
+build_interactive_bar(); 
+
+
 
 
 

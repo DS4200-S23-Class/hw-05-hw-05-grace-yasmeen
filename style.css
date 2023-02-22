@@ -43,6 +43,7 @@ circle:hover{
 
 }
 
+/* rectangle styling */
 rect:hover{
   fill: orange;
 }
